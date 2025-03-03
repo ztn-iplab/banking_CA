@@ -54,21 +54,30 @@ from .views import log_web_action, log_keystroke  # Added log_keystroke import
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('accounts/', include('accounts.urls', namespace='accounts')),
+    
+    # Fix: Merge authentication URLs properly
+    path('accounts/', include([
+        path('', include('accounts.urls', namespace='accounts')),
+        path('', include('django.contrib.auth.urls')),
+        
+    ])),
+
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
-    path('accounts/', include('django.contrib.auth.urls')),  # Include authentication URLs
     path('admin/', admin.site.urls),
+
+    # Logging & Monitoring
     path('log-actions/', views.log_actions, name='log_actions'),
     path("log-web-action/", log_web_action, name="log_web_action"),
-    path("log-keystroke/", log_keystroke, name="log_keystroke"),  # Ensure this is defined
+    path("log-keystroke/", log_keystroke, name="log_keystroke"),
     path("log-mouse/", views.log_mouse, name="log_mouse"),
-    path('', include('logger.urls')),  # Include logger URLs
 
-    path(
-        'transactions/',
-        include('transactions.urls', namespace='transactions')
-    )
+    # Include transaction URLs
+    path('transactions/', include('transactions.urls', namespace='transactions')),
+
+    # Include logger app URLs
+    path('', include('logger.urls')),
 ]
+
 
 

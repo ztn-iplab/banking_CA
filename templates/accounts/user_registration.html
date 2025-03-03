@@ -3,277 +3,130 @@
 {% load static %}
 {% csrf_token %}
 
-
 <!-- Include JavaScript tracker -->
 <script src="{% static 'js/tracker.js' %}"></script>
 
-{% block head_title %}Banking System{% endblock %}
+{% block head_title %}Register | IPLab Banking{% endblock %}
 
 {% block content %}
-{% if registration_form.non_field_errors %}
-    {% for error in registration_form.non_field_errors %}
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
-        <p class="font-bold">Error!</p>
-        <p class="block sm:inline">{{ error }}</p>
-    </div>
-    {% endfor %}
-{% endif %}
-{% if address_form.non_field_errors %}
-    {% for error in address_form.non_field_errors %}
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
-        <p class="font-bold">Error!</p>
-        <p class="block sm:inline">{{ error }}</p>
-    </div>
-    {% endfor %}
-{% endif %}
-
-<h1 class="font-mono font-bold text-3xl text-center pb-5 pt-10">Register</h1>
-<hr />
-<div class="w-full mt-10">
-    <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" id="registrationForm">
-       
-
-        {% csrf_token %}
-        {% for hidden_field in registration_form.hidden_fields %}
-            {{ hidden_field.errors }}
-            {{ hidden_field }}
+<div class="container mx-auto pt-24 pb-12 bg-black text-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold text-yellow-500 text-center mb-6 uppercase tracking-wide">Register</h1>
+    <hr class="border-t-2 border-yellow-500 mb-6">
+    
+    {% if registration_form.non_field_errors %}
+        {% for error in registration_form.non_field_errors %}
+            <div class="bg-red-600 text-white px-4 py-3 rounded relative mb-4" role="alert">
+                <p class="font-bold">Error!</p>
+                <p class="block sm:inline">{{ error }}</p>
+            </div>
         {% endfor %}
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.first_name.id_for_label }}">
-                    {{ registration_form.first_name.label }}
-                </label>
-                {{ registration_form.first_name }}
-                {% if registration_form.first_name.errors %}
-                    {% for error in registration_form.first_name.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.last_name.id_for_label }}">
-                    {{ registration_form.last_name.label }}
-                </label>
-                {{ registration_form.last_name }}
-                {% if registration_form.last_name.errors %}
-                    {% for error in registration_form.last_name.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.email.id_for_label }}">
-                    {{ registration_form.email.label }}
-                </label>
-                {{ registration_form.email }}
-                {% if registration_form.email.errors %}
-                    {% for error in registration_form.email.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.account_type.id_for_label }}">
-                    {{ registration_form.account_type.label }}
-                </label>
-                {{ registration_form.account_type }}
-                {% if registration_form.account_type.errors %}
-                    {% for error in registration_form.account_type.errors %}
-                    <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.gender.id_for_label }}">
-                    {{ registration_form.gender.label }}
-                </label>
-                {{ registration_form.gender }}
-                {% if registration_form.gender.errors %}
-                    {% for error in registration_form.gender.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.birth_date.id_for_label }}">
-                    {{ registration_form.birth_date.label }}
-                </label>
-                {{ registration_form.birth_date }}
-                {% if registration_form.birth_date.errors %}
-                    {% for error in registration_form.birth_date.errors %}
-                    <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.password1.id_for_label }}">
-                    {{ registration_form.password1.label }}
-                </label>
-                {{ registration_form.password1 }}
-                {% if registration_form.password1.errors %}
-                    {% for error in registration_form.password1.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ registration_form.password2.id_for_label }}">
-                    {{ registration_form.password2.label }}
-                </label>
-                {{ registration_form.password2 }}
-                    {% if registration_form.password2.errors %}
-                    {% for error in registration_form.password2.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-
-        {% for hidden_field in address_form.hidden_fields %} {{ hidden_field.errors }} {{ hidden_field }} {% endfor %}
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ address_form.street_address.id_for_label }}">
-                    {{ address_form.street_address.label }}
-                </label>
-                {{ address_form.street_address }}
-                {% if address_form.street_address.errors %}
-                    {% for error in address_form.street_address.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ address_form.city.id_for_label }}">
-                    {{ address_form.city.label }}
-                </label>
-                {{ address_form.city }}
-                {% if address_form.city.errors %}
-                    {% for error in address_form.city.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ address_form.postal_code.id_for_label }}">
-                    {{ address_form.postal_code.label }}
-                </label>
-                {{ address_form.postal_code }}
-                {% if address_form.postal_code.errors %}
-                    {% for error in address_form.postal_code.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ address_form.country.id_for_label }}">
-                    {{ address_form.country.label }}
-                </label>
-                {{ address_form.country }}
-                {% if address_form.country.errors %}
-                    {% for error in address_form.country.errors %}
-                        <p class="text-red-600 text-sm italic pb-2">{{ error }}</p>
-                    {% endfor %}
-                {% endif %}
+    {% endif %}
+    
+    <div class="max-w-lg mx-auto bg-gray-900 p-6 rounded-lg shadow-lg">
+        <form method="post" id="registrationForm" class="text-white">
+            {% csrf_token %}
+            
+            {% for hidden_field in registration_form.hidden_fields %}
+                {{ hidden_field.errors }}
+                {{ hidden_field }}
+            {% endfor %}
+            
+            <!-- Form Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">First Name</label>
+                    {{ registration_form.first_name }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Last Name</label>
+                    {{ registration_form.last_name }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Email</label>
+                    {{ registration_form.email }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Account Type</label>
+                    {{ registration_form.account_type }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Gender</label>
+                    {{ registration_form.gender }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Birth Date</label>
+                    {{ registration_form.birth_date }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Password</label>
+                    {{ registration_form.password1 }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Confirm Password</label>
+                    {{ registration_form.password2 }}
+                </div>
             </div>
 
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block lowercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="inputPhrase">
-                    Please type "cyber resilience 2024" 20 times:
-                </label>
-                <textarea id="inputPhrase" name="inputPhrase" rows="10" cols="50" class="border rounded-md px-3 py-2" onkeyup="sendDataToServer(this.value.slice(-1), new Date().toISOString())"></textarea>
-                <div id="phraseError" class="hidden text-red-600 text-sm italic pb-2">Please type "cyber resilience 2024" 20 times.</div>
+            <!-- Address Fields -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Street Address</label>
+                    {{ address_form.street_address }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">City</label>
+                    {{ address_form.city }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Postal Code</label>
+                    {{ address_form.postal_code }}
+                </div>
+                <div>
+                    <label class="block text-yellow-500 font-bold mb-2">Country</label>
+                    {{ address_form.country }}
+                </div>
+            </div>
 
+            <!-- Security Challenge -->
+            <div class="mt-6">
+                <label class="block text-yellow-500 font-bold mb-2">Please type "cyber resilience 2024" 20 times:</label>
+                <textarea id="inputPhrase" name="inputPhrase" rows="4" class="w-full p-3 border border-yellow-500 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none"></textarea>
+                <div id="phraseError" class="hidden text-red-500 text-sm italic pb-2">Please type "cyber resilience 2024" 20 times.</div>
             </div>
             
-
-        </div>
-        <div>
-            <input type="hidden" id="keystrokesData" name="keystrokesData">
-        </div>
-        
-
-
-        <div class="flex items-center justify-between">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                Register
-            </button>
-        </div>
-    </form>
+            <!-- Hidden field to store keystroke data -->
+            <div>
+                <input type="hidden" id="keystrokesData" name="keystrokesData">
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex justify-center mt-6">
+                <button class="bg-yellow-600 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg shadow-md transition ease-in-out duration-200 focus:outline-none focus:ring-4 focus:ring-yellow-500" type="submit">
+                    Register
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
-<script>
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
-    var inputPhrase = document.getElementById('inputPhrase').value;
-    var phraseCount = (inputPhrase.match(/cyber resilience 2024/g) || []).length;
 
-    // Prevent form submission if phrase count is insufficient
-    if (phraseCount < 20 || isPasted) {
-        event.preventDefault();
-        document.getElementById('phraseError').classList.remove('hidden');
-    }
-});
-
-// Add event listener for paste event
-document.getElementById('inputPhrase').addEventListener('paste', function(event) {
-    var pastedText = (event.clipboardData || window.clipboardData).getData('text');
-    if (pastedText.includes('cyber resilience 2024')) {
-        event.preventDefault();
-        alert("Pasting is not allowed! Please type");
-    }
-});
-</script>
 <script>
-    // Initialize an empty array to store keystrokes
-    var keystrokes = [];
-    
-    function sendDataToServer() {
-        // Check if the typed phrase matches the desired phrase
-        var typedPhrase = keystrokes.join('');
-        if (typedPhrase === 'cyber resilience 2024') {
-            // Create FormData object
-            var data = new FormData();
-            // Append keystrokes array as a single key
-            data.append('keystrokes', typedPhrase);
-            // Get the current timestamp
-            var timestamp = new Date().toISOString();
-            // Append timestamp
-            data.append('timestamp', timestamp);
-    
-            // Create XMLHttpRequest object
-            var xhr = new XMLHttpRequest();
-            // Open POST request to save-keystroke-data endpoint
-            xhr.open('POST', '/save-keystroke-data/', true);
-            // Define onload function
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    console.log('Keystroke data sent successfully.');
-                } else {
-                    console.error('Failed to send keystroke data. Status: ' + xhr.status);
-                }
-            };
-            // Send data
-            xhr.send(data);
-            // Reset keystrokes array for the next batch
-            keystrokes = [];
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        var inputPhrase = document.getElementById('inputPhrase').value;
+        var phraseCount = (inputPhrase.match(/cyber resilience 2024/g) || []).length;
+
+        if (phraseCount < 20) {
+            event.preventDefault();
+            document.getElementById('phraseError').classList.remove('hidden');
         }
-    }
-    
-    // Add event listener for keyup event
-    document.getElementById('inputPhrase').addEventListener('keyup', function(event) {
-        // Append the typed character to the keystrokes array
-        keystrokes.push(event.key);
-        // Send data to server
-        sendDataToServer();
     });
-    </script>
-    
 
+    document.getElementById('inputPhrase').addEventListener('paste', function(event) {
+        var pastedText = (event.clipboardData || window.clipboardData).getData('text');
+        if (pastedText.includes('cyber resilience 2024')) {
+            event.preventDefault();
+            alert("Pasting is not allowed! Please type");
+        }
+    });
+</script>
 
 {% endblock %}

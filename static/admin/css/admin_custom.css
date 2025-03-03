@@ -1,0 +1,90 @@
+/* GLOBAL: Dark Mode */
+body, .module caption, .module th, .nav-sidebar {
+    background-color: #000 !important;
+    color: #ffcc00 !important;
+}
+
+/* SIDEBAR */
+.nav-sidebar {
+    background-color: #111 !important;
+    border-right: 1px solid #444;
+}
+.nav-sidebar a {
+    color: #ffcc00 !important;
+    padding: 10px;
+    display: block;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.nav-sidebar a:hover {
+    background-color: #222 !important;
+}
+
+/* MAIN CONTENT AREA */
+.content, .dashboard .module {
+    background-color: #111 !important;
+    color: #fff !important;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2); /* Subtle glow */
+}
+
+/* 🔹 FORCE DARK TEXT ON WHITE BACKGROUNDS */
+#content, .module, .dashboard .module td, 
+.dashboard .module th, .dashboard .module caption, 
+#nav-sidebar.collapsed, #nav-filter, 
+.dashboard .module caption, 
+.dashboard .module th,
+#recent-actions, 
+#user-tools, 
+#content-related, 
+div.breadcrumbs, 
+.module th {
+    background-color: #fff !important; /* Keep white where needed */
+    color: #1a1a1a !important; /* Force dark text */
+    border: 1px solid #ddd !important;
+}
+
+/* LINKS - Auto adjust */
+a {
+    color: #1a1a1a !important; /* Make links dark on white backgrounds */
+}
+.nav-sidebar a {
+    color: #ffcc00 !important; /* Keep sidebar links yellow */
+}
+.nav-sidebar a:hover {
+    background-color: #222 !important;
+}
+#content a, .module a, .dashboard a {
+    color: #004085 !important; /* Dark blue for links */
+}
+#content a:hover, .module a:hover, .dashboard a:hover {
+    color: #0056b3 !important;
+}
+
+/* BUTTONS */
+.button, input[type=submit], button {
+    background-color: #ffcc00 !important;
+    color: #000 !important;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 8px 15px;
+    text-transform: uppercase;
+}
+.button:hover, input[type=submit]:hover, button:hover {
+    background-color: #e6b800 !important;
+}
+
+/* FORMS & INPUT FIELDS */
+input, select, textarea {
+    background-color: #fff !important;
+    color: #1a1a1a !important; /* Dark text on white inputs */
+    border: 1px solid #ffcc00 !important;
+    padding: 8px;
+    border-radius: 5px;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #e6b800 !important;
+    box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+}

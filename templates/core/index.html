@@ -1,29 +1,98 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-
-<!-- Include JavaScript tracker -->
-<script src="{% static 'js/tracker.js' %}"></script>
-
-{% block head_title %}Banking System{% endblock %}
+{% block head_title %}IPLab Banking - Continuous Authentication{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto flex flex-col md:flex-row items-center my-12 md:my-24">
-        <!--Left Col-->
-        <div class="flex flex-col w-full lg:w-1/2 justify-center items-start pt-12 pb-24 px-6">
-            <h1 class="font-bold text-4xl my-4">IPLab Internet Banking</h1>
-            <p class="leading-normal mb-4">
-                This web application is a part of a reaserch for continuous authentication.
-                You can find more on <a href="https://iplab.naist.jp/">IPLab</a>
-            </p>
-            <div>
-            <a href="{% url 'accounts:user_registration' %}" class="bg-transparent hover:bg-gray-800 text-gray-800 hover:text-white rounded shadow hover:shadow-lg py-2 px-4 border border-gray-900 hover:border-transparent">Register</a>
-            <a href="https://iplab.naist.jp/" class="bg-transparent hover:bg-gray-800 text-gray-800 hover:text-white rounded shadow hover:shadow-lg py-2 px-4 border border-gray-900 hover:border-transparent">IPLab</a>
+    <!-- Navbar -->
+    <header class="navbar fixed top-0 left-0 w-full bg-black text-white py-4 shadow-lg z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <h2 class="text-xl font-bold">IPLab Banking</h2>
+            
+            <!-- Navigation Links -->
+            <nav class="flex-1 flex justify-center space-x-8">
+                <a href="#home" class="text-white font-semibold hover:text-yellow-500 transition">Home</a>
+                <a href="#about" class="text-white font-semibold hover:text-yellow-500 transition">About</a>
+                <a href="#transactions" class="text-white font-semibold hover:text-yellow-500 transition">Services</a>
+            </nav>
+            
+            <!-- Authentication Buttons -->
+            <div class="space-x-4">
+                <a href="{% url 'accounts:user_login' %}" class="bg-yellow-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-yellow-500 transition">Login</a>
+                <a href="{% url 'accounts:user_registration' %}" class="border border-yellow-600 text-yellow-600 px-4 py-2 rounded-lg font-bold hover:bg-yellow-600 hover:text-white transition">Register</a>
             </div>
         </div>
-        <!--Right Col-->
-        <div class="w-full lg:w-1/2 lg:py-6 text-center">
-            <h1 style="font-size: 12rem" class="font-black text-gray-800">IPLab</h1>
+    </header>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero bg-black text-white py-24 text-center mt-16">
+        <div class="container mx-auto">
+            <h1 class="text-5xl font-extrabold">IPLab Internet Banking</h1>
+            <p class="text-lg mt-4 max-w-2xl mx-auto">
+                Experience secure and seamless internet banking with continuous authentication using behavioral biometrics.
+            </p>
+            <a href="{% url 'accounts:user_registration' %}" class="mt-6 inline-block bg-yellow-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-yellow-500 transition">
+                Get Started
+            </a>
         </div>
-    </div>
+    </section>
+    
+    <!-- Authentication Section -->
+    <section id="auth-section" class="auth-section container mx-auto my-12 bg-gray-900 text-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold">Get Started</h2>
+        <p class="mt-2">
+            This web application is part of a research project on continuous authentication using behavioral biometrics.
+        </p>
+        <div class="mt-4 flex space-x-4">
+            <a href="{% url 'accounts:user_login' %}" class="bg-yellow-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-yellow-500 transition">Login</a>
+            <a href="{% url 'accounts:user_registration' %}" class="border border-yellow-600 text-yellow-600 px-6 py-2 rounded-lg font-bold hover:bg-yellow-600 hover:text-white transition">Register</a>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="about container mx-auto my-12 bg-gray-900 text-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold">Innovative Security Solutions</h2>
+        <p class="mt-2">Empowering internet banking with continuous authentication.</p>
+        <p class="mt-4">
+            IPLab's continuous authentication system leverages behavioral biometrics to enhance banking security.
+        </p>
+        <a href="https://iplab.naist.jp/" class="mt-4 inline-block bg-yellow-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-yellow-500 transition">
+            Learn More
+        </a>
+        <div class="mt-6">
+            <img src="{% static 'images/about-placeholder.jpg' %}" alt="About Section Image" class="w-full rounded-lg shadow-md">
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section id="transactions" class="services container mx-auto my-12">
+        <h2 class="text-4xl font-extrabold text-black text-center uppercase tracking-wide drop-shadow-lg">Secure Transactions</h2>
+        <div class="grid md:grid-cols-3 gap-8 mt-6">
+            <div class="bg-gray-900 text-white p-6 rounded-lg shadow-lg text-center">
+                <img src="{% static 'images/picture.png' %}" alt="Security" class="w-full rounded-lg mb-4">
+                <h3 class="text-xl font-bold">Advanced Security</h3>
+                <p class="mt-2">Protect your banking data with behavioral biometrics.</p>
+            </div>
+            <div class="bg-gray-900 text-white p-6 rounded-lg shadow-lg text-center">
+                <img src="{% static 'images/auth-placeholder.jpg' %}" alt="Authentication" class="w-full rounded-lg mb-4">
+                <h3 class="text-xl font-bold">Seamless Authentication</h3>
+                <p class="mt-2">Stay logged in securely without frequent password entries.</p>
+            </div>
+            <div class="bg-gray-900 text-white p-6 rounded-lg shadow-lg text-center">
+                <img src="{% static 'images/monitoring-placeholder.jpg' %}" alt="Monitoring" class="w-full rounded-lg mb-4">
+                <h3 class="text-xl font-bold">Continuous Monitoring</h3>
+                <p class="mt-2">Real-time fraud detection and prevention mechanisms.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="contact container mx-auto my-12 bg-gray-900 text-white p-8 rounded-lg shadow-lg text-center">
+        <h2 class="text-3xl font-bold">Get in Touch</h2>
+        <p class="mt-2">Have questions? Reach out to us for more details on our research.</p>
+        <a href="#" class="mt-4 inline-block bg-yellow-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-yellow-500 transition">
+            Contact Us
+        </a>
+    </section>
 {% endblock %}

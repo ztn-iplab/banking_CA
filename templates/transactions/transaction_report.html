@@ -1,6 +1,7 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
-{% block head_title %}Transaction Report{% endblock %}
+{% block head_title %}Transaction Report | IPLab Banking{% endblock %}
 
 {% block head_extra %}
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
@@ -10,25 +11,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto mt-10">
-    <h1 class="font-mono font-extrabold text-3xl text-center text-blue-600 mb-5">Transaction Report</h1>
-    <hr class="border-t-2 border-gray-200 mb-5">
+<div class="container mx-auto pt-24 pb-12 bg-black text-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold text-yellow-500 text-center mb-6 uppercase tracking-wide">Transaction Report</h1>
+    <hr class="border-t-2 border-gray-700 mb-5">
 
     <!-- Date Range Filter -->
-    <form method="get" class="mb-5">
-        <div class="relative">
+    <form method="get" class="mb-6 flex justify-center">
+        <div class="relative flex items-center w-full max-w-md">
             <input 
                 type="search" 
                 name="daterange" 
                 id="search" 
                 placeholder="Filter by date range" 
                 value="{{ request.GET.daterange }}" 
-                class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                class="block w-full px-4 py-2 border border-yellow-500 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-yellow-500 focus:outline-none"
             />
-            <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2">
-                <svg class="w-6 h-6 text-gray-500 hover:text-gray-700" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+            <button type="submit" class="ml-2 bg-yellow-600 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition flex items-center">Search</button>
             </button>
         </div>
         {% if form.daterange.errors %}
@@ -42,8 +40,8 @@
 
     <!-- Transactions Table -->
     <div class="overflow-x-auto">
-        <table class="table-auto w-full border-collapse border border-gray-200">
-            <thead class="bg-gray-800 text-white">
+        <table class="table-auto w-full border-collapse border border-gray-700 text-white">
+            <thead class="bg-yellow-600 text-black">
                 <tr class="uppercase font-semibold text-sm">
                     <th class="px-4 py-2">Transaction Type</th>
                     <th class="px-4 py-2">Date</th>
@@ -53,11 +51,11 @@
             </thead>
             <tbody>
                 {% for transaction in object_list %}
-                    <tr class="{% cycle 'bg-gray-100' 'bg-gray-200' %} hover:bg-gray-300">
-                        <td class="border px-4 py-2 text-center">{{ transaction.get_transaction_type_display }}</td>
-                        <td class="border px-4 py-2 text-center">{{ transaction.timestamp|date:"Y-m-d H:i" }}</td>
-                        <td class="border px-4 py-2 text-center">$ {{ transaction.amount|floatformat:2 }}</td>
-                        <td class="border px-4 py-2 text-center">$ {{ transaction.balance_after_transaction|floatformat:2 }}</td>
+                    <tr class="{% cycle 'bg-gray-900' 'bg-black' %} hover:bg-gray-700">
+                        <td class="border border-gray-700 px-4 py-2 text-center">{{ transaction.get_transaction_type_display }}</td>
+                        <td class="border border-gray-700 px-4 py-2 text-center">{{ transaction.timestamp|date:"Y-m-d H:i" }}</td>
+                        <td class="border border-gray-700 px-4 py-2 text-center">$ {{ transaction.amount|floatformat:2 }}</td>
+                        <td class="border border-gray-700 px-4 py-2 text-center">$ {{ transaction.balance_after_transaction|floatformat:2 }}</td>
                     </tr>
                 {% empty %}
                     <tr>
@@ -67,7 +65,7 @@
                     </tr>
                 {% endfor %}
                 {% if object_list %}
-                    <tr class="bg-gray-600 text-white">
+                    <tr class="bg-yellow-600 text-black">
                         <th class="px-4 py-2 text-right" colspan="3">Final Balance</th>
                         <th class="px-4 py-2 text-center">$ {{ account.balance|floatformat:2 }}</th>
                     </tr>
@@ -101,4 +99,3 @@
     });
 </script>
 {% endblock %}
-

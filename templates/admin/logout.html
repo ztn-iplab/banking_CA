@@ -1,0 +1,7 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+    <button type="submit">Log out</button>
+</form>
+
+{% endblock %}
