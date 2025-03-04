@@ -1,5 +1,8 @@
 from django.views.generic import TemplateView
-
+from django.contrib.auth import logout
+from django.http import JsonResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 # banking_system/app_name/views.py
 import json
 from django.http import JsonResponse
@@ -67,3 +70,18 @@ def log_mouse(request):
             timestamp=data.get("timestamp")
         )
         return JsonResponse({"status": "success"})
+
+
+#For logging out:
+
+@csrf_exempt  # ✅ Disable CSRF for Logout
+def admin_logout(request):
+    """✅ Allow Logout via GET and POST, then Redirect"""
+    if request.method in ["POST", "GET"]:  # ✅ Accept both GET and POST
+        logout(request)
+        request.session.flush()  # ✅ Clears session data
+
+        # ✅ Redirect to the login page
+        return HttpResponseRedirect(reverse("admin:login"))  # ✅ Redirect Admin to Login Page
+
+    return JsonResponse({"error": "Invalid request"}, status=400)

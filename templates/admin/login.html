@@ -3,44 +3,92 @@
 
 {% block extrastyle %}{{ block.super }}
 <style>
+    /* 🔥 Improved Background */
     body {
-        background-color: black !important;
+        background: linear-gradient(to right, #111, #222); /* Dark gradient */
         color: white !important;
     }
+
+    /* 💡 Centered Admin Login Box */
     #content-main {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
     }
+
+    /* 📌 Improved Login Card */
     .login-box {
         background: #1e1e1e;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.3);
-        width: 350px;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.4); /* Stronger glow effect */
+        width: 380px;
         text-align: center;
+        border: 1px solid #d4af37;
     }
+
+    /* ✨ Improved Headings */
+    .login-box h2 {
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #ffcc00;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        text-shadow: 0px 0px 10px rgba(255, 204, 0, 0.5);
+    }
+
+    /* 📌 Enhanced Submit Button */
     .submit-row input {
-        background-color: #d4af37 !important; /* Dark Yellow */
+        background: #ffcc00 !important; /* Gold */
         color: black !important;
         font-weight: bold;
-        padding: 10px 20px;
-        border-radius: 5px;
+        padding: 12px 20px;
+        border-radius: 6px;
         border: none;
-        transition: 0.3s;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.3);
     }
+
     .submit-row input:hover {
-        background-color: #b99b30 !important; /* Slightly darker yellow */
+        background: #e6b800 !important; /* Darker gold */
+        transform: scale(1.05);
+        box-shadow: 0px 6px 14px rgba(255, 215, 0, 0.5);
     }
+
+    /* ✅ Improved Input Fields */
     input {
-        background-color: #333 !important;
+        background: #333 !important;
         color: white !important;
         border: 1px solid #d4af37 !important;
         width: 100%;
-        padding: 8px;
+        padding: 10px;
         margin-top: 10px;
-        border-radius: 5px;
+        border-radius: 6px;
+        box-shadow: inset 0px 0px 8px rgba(255, 215, 0, 0.2);
+    }
+
+    input:focus {
+        border-color: #ffcc00 !important;
+        box-shadow: 0px 0px 8px rgba(255, 204, 0, 0.6);
+        outline: none;
+    }
+
+    /* 🔗 Enhanced Password Reset Link */
+    .password-reset-link a {
+        display: block;
+        margin-top: 12px;
+        color: #ffcc00;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .password-reset-link a:hover {
+        text-decoration: underline;
+        color: #e6b800;
     }
 </style>
 {% endblock %}
@@ -56,7 +104,7 @@
 {% block content %}
 <div id="content-main">
     <div class="login-box">
-        <h2 class="text-yellow-500 text-center mb-4">Admin Login</h2>
+        <h2>Admin Login</h2>
         
         {% if form.errors and not form.non_field_errors %}
         <p class="errornote">
@@ -87,7 +135,7 @@
             {% url 'admin_password_reset' as password_reset_url %}
             {% if password_reset_url %}
             <div class="password-reset-link">
-                <a href="{{ password_reset_url }}" class="text-yellow-500 hover:text-yellow-400">
+                <a href="{{ password_reset_url }}">
                     {% translate 'Forgotten your password or username?' %}
                 </a>
             </div>

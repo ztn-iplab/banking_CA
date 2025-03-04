@@ -1,28 +1,29 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from django.contrib.admin.sites import AdminSite
-from .models import KeystrokeLog, MouseLog, WebActionLog
-from .models import BankAccountType, User, UserAddress, UserBankAccount
+from django.urls import reverse
+from .models import KeystrokeLog, MouseLog, WebActionLog, BankAccountType, User, UserAddress, UserBankAccount
 
-# Set Django Admin Titles
-admin.site.site_header = "IPLab Banking Admin"
-admin.site.site_title = "Admin Portal"
-admin.site.index_title = "Welcome to IPLab Banking Admin"
-
-# Ensure CSS is included in Django Admin
+# ✅ Custom Django Admin Site (Fixes Jet Dashboard Logout)
 class CustomAdminSite(AdminSite):
+    """Custom Django Admin with Correct Logout Link."""
+    site_header = "IPLab Banking Admin"
+    site_title = "Admin Portal"
+    index_title = "Welcome to IPLab Banking Admin"
+
     def each_context(self, request):
+        """✅ Override each_context to set the correct logout URL"""
         context = super().each_context(request)
-        context["custom_css"] = "admin/css/admin_custom.css"  # Make sure this exists
+        context["logout_url"] = reverse("admin_logout")  # ✅ This fixes the NoReverseMatch error
         return context
 
-admin.site = CustomAdminSite()
+# ✅ Create a Custom Admin Site
+admin_site = CustomAdminSite(name="custom_admin")
 
-# Register models
-admin.site.register(BankAccountType)
-admin.site.register(User)
-admin.site.register(UserAddress)
-admin.site.register(UserBankAccount)
-admin.site.register(KeystrokeLog)
-admin.site.register(MouseLog)
-admin.site.register(WebActionLog)
+# ✅ Register models
+admin_site.register(BankAccountType)
+admin_site.register(User)
+admin_site.register(UserAddress)
+admin_site.register(UserBankAccount)
+admin_site.register(KeystrokeLog)
+admin_site.register(MouseLog)
+admin_site.register(WebActionLog)

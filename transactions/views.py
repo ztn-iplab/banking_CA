@@ -23,12 +23,20 @@ from transactions.forms import (
 from transactions.models import Transaction
 
 
-class TransactionRepostView(LoginRequiredMixin, ListView):
+class TransactionReportView(LoginRequiredMixin, ListView):
+    """✅ Prevents errors for users without accounts"""
+    
     template_name = 'transactions/transaction_report.html'
     model = Transaction
     form_data = {}
 
     def get(self, request, *args, **kwargs):
+        """✅ Redirect users without accounts before proceeding"""
+        if not hasattr(self.request.user, 'account'):
+            if self.request.user.is_superuser:
+                return HttpResponseRedirect(reverse_lazy('admin'))  # ✅ Redirect admins
+            return HttpResponseRedirect(reverse_lazy('accounts:no_account'))  # ✅ Redirect users without accounts
+
         form = TransactionDateRangeForm(request.GET or None)
         if form.is_valid():
             self.form_data = form.cleaned_data
@@ -36,23 +44,29 @@ class TransactionRepostView(LoginRequiredMixin, ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(
-            account=self.request.user.account
-        )
+        """✅ Only query transactions if the user has an account"""
+        if not hasattr(self.request.user, 'account'):
+            return Transaction.objects.none()  # ✅ Return empty queryset if user has no account
+
+        queryset = super().get_queryset().filter(account=self.request.user.account)
 
         daterange = self.form_data.get("daterange")
-
         if daterange:
             queryset = queryset.filter(timestamp__date__range=daterange)
 
         return queryset.distinct()
 
     def get_context_data(self, **kwargs):
+        """✅ Ensure 'account' is only accessed if it exists"""
         context = super().get_context_data(**kwargs)
-        context.update({
-            'account': self.request.user.account,
-            'form': TransactionDateRangeForm(self.request.GET or None)
-        })
+
+        if hasattr(self.request.user, 'account'):
+            context.update({
+                'account': self.request.user.account,
+                'form': TransactionDateRangeForm(self.request.GET or None)
+            })
+        else:
+            context.update({'account': None})
 
         return context
 
@@ -78,69 +92,67 @@ class TransactionCreateMixin(LoginRequiredMixin, CreateView):
 
         return context
 
-
+# Deposting money
 class DepositMoneyView(TransactionCreateMixin):
     form_class = DepositForm
     title = 'Deposit Money to Your Account'
 
     def get_initial(self):
-        initial = {'transaction_type': DEPOSIT}
-        return initial
+        return {'transaction_type': DEPOSIT}
 
     def form_valid(self, form):
         amount = form.cleaned_data.get('amount')
         account = self.request.user.account
 
+        # ✅ Ensure the amount is valid
+        if amount <= 0:
+            messages.error(self.request, "Deposit amount must be greater than zero.")
+            return self.form_invalid(form)
+
+        # ✅ Update account balance
         if not account.initial_deposit_date:
             now = timezone.now()
-            next_interest_month = int(
-                12 / account.account_type.interest_calculation_per_year
-            )
+            next_interest_month = int(12 / account.account_type.interest_calculation_per_year)
             account.initial_deposit_date = now
-            account.interest_start_date = (
-                now + relativedelta(
-                    months=+next_interest_month
-                )
-            )
+            account.interest_start_date = now + relativedelta(months=+next_interest_month)
 
         account.balance += amount
-        account.save(
-            update_fields=[
-                'initial_deposit_date',
-                'balance',
-                'interest_start_date'
-            ]
-        )
+        account.save(update_fields=['initial_deposit_date', 'balance', 'interest_start_date'])
 
-        messages.success(
-            self.request,
-            f'{amount}$ was deposited to your account successfully'
-        )
+        messages.success(self.request, f'${amount:.2f} was deposited successfully! Your new balance is ${account.balance:.2f}')
 
-        return super().form_valid(form)
+        return self.render_to_response(self.get_context_data(form=form, account=account))
 
 
+
+# WithDrawing Money
 class WithdrawMoneyView(TransactionCreateMixin):
     form_class = WithdrawForm
     title = 'Withdraw Money from Your Account'
 
     def get_initial(self):
-        initial = {'transaction_type': WITHDRAWAL}
-        return initial
+        return {'transaction_type': WITHDRAWAL}
 
     def form_valid(self, form):
         amount = form.cleaned_data.get('amount')
+        account = self.request.user.account
 
-        self.request.user.account.balance -= form.cleaned_data.get('amount')
-        self.request.user.account.save(update_fields=['balance'])
+        # ✅ Ensure the withdrawal amount is valid
+        if amount <= 0:
+            messages.error(self.request, "Invalid withdrawal amount. Please enter a valid amount.")
+            return self.form_invalid(form)
 
-        messages.success(
-            self.request,
-            f'Successfully withdrawn {amount}$ from your account'
-        )
+        if account.balance < amount:
+            messages.error(self.request, f"Insufficient funds! Your current balance is ${account.balance:.2f}")
+            return self.form_invalid(form)
 
-        return super().form_valid(form)
+        # ✅ Deduct the amount and update balance
+        account.balance -= amount
+        account.save(update_fields=['balance'])
 
+        messages.success(self.request, f'Withdrawal of ${amount:.2f} was successful! Your new balance is ${account.balance:.2f}')
+
+        return self.render_to_response(self.get_context_data(form=form, account=account))
 
 
 def log_actions(request):

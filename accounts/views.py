@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.views import LoginView
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, redirect,render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, RedirectView
 from django.http import JsonResponse
@@ -40,41 +40,27 @@ def save_keystroke_data(request):
 
 
 class UserRegistrationView(TemplateView):
+    """✅ Prevents users without accounts from being redirected to /transactions/report/"""
+
     model = User
     form_class = UserRegistrationForm
     template_name = 'accounts/user_registration.html'
 
     def dispatch(self, request, *args, **kwargs):
+        """✅ Ensure logged-in users go to the right place"""
         if self.request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('transactions:transaction_report'))
+            user = self.request.user
+            
+            if user.is_superuser:
+                return HttpResponseRedirect('/admin/')  # ✅ Redirect Admins to `/admin/`
+            
+            if hasattr(user, 'account'):
+                return HttpResponseRedirect('/transactions/report/')  # ✅ Normal users go to Transactions
+            
+            return HttpResponseRedirect('/accounts/no-account/')  # ✅ Users without accounts go here
+        
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        registration_form = UserRegistrationForm(self.request.POST)
-        address_form = UserAddressForm(self.request.POST)
-
-        if registration_form.is_valid() and address_form.is_valid():
-            user = registration_form.save()
-            address = address_form.save(commit=False)
-            address.user = user
-            address.save()
-
-            login(self.request, user)
-            messages.success(
-                self.request,
-                (
-                    f'Thank You For Creating A Bank Account. '
-                    f'Your Account Number is {user.account.account_no}. '
-                )
-            )
-            return HttpResponseRedirect(reverse_lazy('transactions:deposit_money'))
-
-        return self.render_to_response(
-            self.get_context_data(
-                registration_form=registration_form,
-                address_form=address_form
-            )
-        )
 
     def get_context_data(self, **kwargs):
         if 'registration_form' not in kwargs:
@@ -86,10 +72,32 @@ class UserRegistrationView(TemplateView):
 
 
 class UserLoginView(LoginView):
+    """✅ Prevent admins and users without accounts from going to /transactions/report/"""
+    
     template_name = 'accounts/user_login.html'
     redirect_authenticated_user = True
 
+    def form_valid(self, form):
+        """✅ After login, check user role and redirect accordingly"""
+        user = form.get_user()
+        login(self.request, user)
 
+        if user.is_superuser:  # ✅ Redirect admin to admin dashboard
+            return redirect('/admin/')
+        
+        if hasattr(user, 'account'):  # ✅ Ensure the user has an account before redirecting
+            return redirect('/transactions/report/')
+        else:
+            return redirect('/accounts/no-account/')  # ✅ Redirect users without an account
+
+
+
+# Users without accounts
+def no_account_view(request):
+    """✅ Show a message when a user has no account"""
+    return render(request, 'accounts/no_account.html', {"message": "You do not have an account linked to your user."})
+
+# Logout View
 class LogoutView(RedirectView):
     pattern_name = 'home'
 
@@ -153,3 +161,4 @@ def log_mouse(request):
             timestamp=data.get("timestamp")
         )
         return JsonResponse({"status": "success"})
+

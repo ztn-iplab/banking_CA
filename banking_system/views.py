@@ -3,6 +3,8 @@ import json
 from django.http import JsonResponse
 from .models import ActionLog, WebActionLog, KeystrokeLog, MouseLog
 
+
+
 # Your other views like HomeView remain unchanged
 
 @csrf_exempt  # Disable CSRF protection for this view
