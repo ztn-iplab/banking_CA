@@ -79,26 +79,17 @@
 {% block footer_extra %}
 <script>
     $(function () {
-        // Initialize the date range picker with validation
+        // Initialize the date range picker
         $('input[name="daterange"]').daterangepicker({
             autoUpdateInput: false,
             locale: {
                 cancelLabel: "Clear",
-            }
+            },
         });
 
-        // Set the input value when a valid date range is selected
+        // Set the input value when a date range is selected
         $('input[name="daterange"]').on("apply.daterangepicker", function (ev, picker) {
-            const startDate = picker.startDate.format("YYYY-MM-DD");
-            const endDate = picker.endDate.format("YYYY-MM-DD");
-
-            // ✅ Ensure start date is not after end date
-            if (startDate > endDate) {
-                alert("🚨 Invalid Date Range: Start date cannot be after end date!");
-                $(this).val(""); // Clear input
-            } else {
-                $(this).val(startDate + " - " + endDate);
-            }
+            $(this).val(picker.startDate.format("YYYY-MM-DD") + " - " + picker.endDate.format("YYYY-MM-DD"));
         });
 
         // Clear the input value when the picker is canceled

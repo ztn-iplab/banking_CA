@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
 from django.views.generic import CreateView, ListView
+from django.db.models import Q
 
 from transactions.constants import DEPOSIT, WITHDRAWAL
 from transactions.forms import (
@@ -25,78 +26,94 @@ from .models import ActionLog, WebActionLog, KeystrokeLog, MouseLog
 
 
 class TransactionReportView(LoginRequiredMixin, ListView):
+    """✅ Handles transaction filtering and reporting"""
+    
     template_name = 'transactions/transaction_report.html'
     model = Transaction
     form_data = {}
 
     def get(self, request, *args, **kwargs):
+        """✅ Populate form data for date filtering"""
         form = TransactionDateRangeForm(request.GET or None)
         if form.is_valid():
             self.form_data = form.cleaned_data
 
         return super().get(request, *args, **kwargs)
 
- 
+    def get_queryset(self):
+        """✅ Ensure transactions are correctly filtered by date range"""
+        if not hasattr(self.request.user, 'account'):
+            return Transaction.objects.none()  # ✅ Prevent error if user has no account
 
-def get_queryset(self):
-    """✅ Debugging Transactions Query"""
-    if not hasattr(self.request.user, 'account'):
-        return Transaction.objects.none()  # ✅ Prevent error if user has no account
+        queryset = Transaction.objects.filter(account=self.request.user.account)
 
-    queryset = Transaction.objects.filter(account=self.request.user.account)
-    
-    print("🔍 DEBUG: Transactions Before Filtering:", queryset.count())
+        # ✅ Print transactions before filtering (Debugging)
+        print("🔍 DEBUG: Transactions Before Filtering:", queryset.count())
 
-    # ✅ Ensure `form_data` is populated
-    if not self.form_data:
-        self.form_data = {}
+        # ✅ Ensure `form_data` is populated
+        if not self.form_data:
+            self.form_data = {}
 
-    # ✅ Handle date range filtering
-    daterange = self.form_data.get("daterange")
-    if daterange:
-        print("🔍 DEBUG: Date Range Input:", daterange)
+        # ✅ Handle date range filtering
+        daterange = self.form_data.get("daterange")
 
-        if isinstance(daterange, str) and " - " in daterange:
-            try:
-                start_date_str, end_date_str = daterange.split(" - ")
-                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
-                end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+        if daterange:
+            print("🔍 DEBUG: Date Range Input:", daterange)  # ✅ Debugging output
 
-                # ✅ Extend the end date by one day to ensure today is included
-                end_date += datetime.timedelta(days=1)
+            if isinstance(daterange, list) and len(daterange) == 2:
+                try:
+                    start_date = parse_date(daterange[0])
+                    end_date = parse_date(daterange[1])
 
-                # ✅ Ensure both dates are timezone-aware
-                start_datetime = make_aware(datetime.datetime.combine(start_date, datetime.time.min))
-                end_datetime = make_aware(datetime.datetime.combine(end_date, datetime.time.max))
+                    if start_date and end_date:
+                        # ✅ Ensure the full end date is included by setting it to max time
+                        end_date = end_date + timedelta(days=1)
 
-                queryset = queryset.filter(timestamp__range=(start_datetime, end_datetime))
+                        # ✅ Convert to timezone-aware datetime objects
+                        start_datetime = make_aware(datetime.datetime.combine(start_date, datetime.time.min))
+                        end_datetime = make_aware(datetime.datetime.combine(end_date, datetime.time.max))
 
-                print("🔍 DEBUG: Transactions After Filtering:", queryset.count())
+                        # ✅ Apply filtering correctly
+                        queryset = queryset.filter(timestamp__range=(start_datetime, end_datetime))
 
-            except ValueError:
-                print("🚨 DEBUG: Invalid Date Format Entered!")
-                return queryset.none()  # No results if parsing fails
+                        print("🔍 DEBUG: Transactions After Filtering:", queryset.count())  # ✅ Debug log
 
-    return queryset.order_by('-timestamp').distinct()
+                except ValueError:
+                    print("🚨 DEBUG: Invalid Date Format Entered!")
+                    return queryset.none()  # No results if parsing fails
 
+        return queryset.order_by('-timestamp').distinct()
 
     def get_context_data(self, **kwargs):
+        """✅ Provide form data and user account to the template"""
         context = super().get_context_data(**kwargs)
         context.update({
             'account': self.request.user.account,
             'form': TransactionDateRangeForm(self.request.GET or None)
         })
+        return context
 
+
+    def get_context_data(self, **kwargs):
+        """✅ Provide form data and user account to the template"""
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'account': self.request.user.account,
+            'form': TransactionDateRangeForm(self.request.GET or None)
+        })
         return context
 
 
 class TransactionCreateMixin(LoginRequiredMixin, CreateView):
+    """✅ Mixin for handling transaction creation"""
+    
     template_name = 'transactions/transaction_form.html'
     model = Transaction
     title = ''
     success_url = reverse_lazy('transactions:transaction_report')
 
     def get_form_kwargs(self):
+        """✅ Pass user account to the transaction form"""
         kwargs = super().get_form_kwargs()
         kwargs.update({
             'account': self.request.user.account
@@ -104,14 +121,14 @@ class TransactionCreateMixin(LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_context_data(self, **kwargs):
+        """✅ Pass title to template context"""
         context = super().get_context_data(**kwargs)
         context.update({
             'title': self.title
         })
-
         return context
 
-# Deposting money
+# Depositing Money
 class DepositMoneyView(TransactionCreateMixin):
     form_class = DepositForm
     title = 'Deposit Money to Your Account'
@@ -137,6 +154,15 @@ class DepositMoneyView(TransactionCreateMixin):
 
         account.balance += amount
         account.save(update_fields=['initial_deposit_date', 'balance', 'interest_start_date'])
+
+        # ✅ SAVE TRANSACTION
+        transaction = Transaction.objects.create(
+            account=account,
+            transaction_type=DEPOSIT,
+            amount=amount,
+            balance_after_transaction=account.balance
+        )
+        transaction.save()
 
         messages.success(self.request, f'${amount:.2f} was deposited successfully! Your new balance is ${account.balance:.2f}')
 
@@ -168,6 +194,15 @@ class WithdrawMoneyView(TransactionCreateMixin):
         # ✅ Deduct the amount and update balance
         account.balance -= amount
         account.save(update_fields=['balance'])
+
+        # ✅ SAVE TRANSACTION
+        transaction = Transaction.objects.create(
+            account=account,
+            transaction_type=WITHDRAWAL,
+            amount=amount,
+            balance_after_transaction=account.balance
+        )
+        transaction.save()
 
         messages.success(self.request, f'Withdrawal of ${amount:.2f} was successful! Your new balance is ${account.balance:.2f}')
 
