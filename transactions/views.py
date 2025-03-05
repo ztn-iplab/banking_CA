@@ -1,18 +1,17 @@
 from dateutil.relativedelta import relativedelta
 
+import json
+import datetime
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.dateparse import parse_date
+from django.utils.timezone import make_aware
 from django.views.generic import CreateView, ListView
-# banking_system/app_name/views.py
-import json
-from django.http import JsonResponse
-from .models import ActionLog
-#import json
-#from django.http import JsonResponse
-from .models import WebActionLog
-from .models import KeystrokeLog, MouseLog
 
 from transactions.constants import DEPOSIT, WITHDRAWAL
 from transactions.forms import (
@@ -21,52 +20,72 @@ from transactions.forms import (
     WithdrawForm,
 )
 from transactions.models import Transaction
+from .models import ActionLog, WebActionLog, KeystrokeLog, MouseLog
+
 
 
 class TransactionReportView(LoginRequiredMixin, ListView):
-    """✅ Prevents errors for users without accounts"""
-    
     template_name = 'transactions/transaction_report.html'
     model = Transaction
     form_data = {}
 
     def get(self, request, *args, **kwargs):
-        """✅ Redirect users without accounts before proceeding"""
-        if not hasattr(self.request.user, 'account'):
-            if self.request.user.is_superuser:
-                return HttpResponseRedirect(reverse_lazy('admin'))  # ✅ Redirect admins
-            return HttpResponseRedirect(reverse_lazy('accounts:no_account'))  # ✅ Redirect users without accounts
-
         form = TransactionDateRangeForm(request.GET or None)
         if form.is_valid():
             self.form_data = form.cleaned_data
 
         return super().get(request, *args, **kwargs)
 
-    def get_queryset(self):
-        """✅ Only query transactions if the user has an account"""
-        if not hasattr(self.request.user, 'account'):
-            return Transaction.objects.none()  # ✅ Return empty queryset if user has no account
+ 
 
-        queryset = super().get_queryset().filter(account=self.request.user.account)
+def get_queryset(self):
+    """✅ Debugging Transactions Query"""
+    if not hasattr(self.request.user, 'account'):
+        return Transaction.objects.none()  # ✅ Prevent error if user has no account
 
-        daterange = self.form_data.get("daterange")
-        if daterange:
-            queryset = queryset.filter(timestamp__date__range=daterange)
+    queryset = Transaction.objects.filter(account=self.request.user.account)
+    
+    print("🔍 DEBUG: Transactions Before Filtering:", queryset.count())
 
-        return queryset.distinct()
+    # ✅ Ensure `form_data` is populated
+    if not self.form_data:
+        self.form_data = {}
+
+    # ✅ Handle date range filtering
+    daterange = self.form_data.get("daterange")
+    if daterange:
+        print("🔍 DEBUG: Date Range Input:", daterange)
+
+        if isinstance(daterange, str) and " - " in daterange:
+            try:
+                start_date_str, end_date_str = daterange.split(" - ")
+                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+
+                # ✅ Extend the end date by one day to ensure today is included
+                end_date += datetime.timedelta(days=1)
+
+                # ✅ Ensure both dates are timezone-aware
+                start_datetime = make_aware(datetime.datetime.combine(start_date, datetime.time.min))
+                end_datetime = make_aware(datetime.datetime.combine(end_date, datetime.time.max))
+
+                queryset = queryset.filter(timestamp__range=(start_datetime, end_datetime))
+
+                print("🔍 DEBUG: Transactions After Filtering:", queryset.count())
+
+            except ValueError:
+                print("🚨 DEBUG: Invalid Date Format Entered!")
+                return queryset.none()  # No results if parsing fails
+
+    return queryset.order_by('-timestamp').distinct()
+
 
     def get_context_data(self, **kwargs):
-        """✅ Ensure 'account' is only accessed if it exists"""
         context = super().get_context_data(**kwargs)
-
-        if hasattr(self.request.user, 'account'):
-            context.update({
-                'account': self.request.user.account,
-                'form': TransactionDateRangeForm(self.request.GET or None)
-            })
-        else:
-            context.update({'account': None})
+        context.update({
+            'account': self.request.user.account,
+            'form': TransactionDateRangeForm(self.request.GET or None)
+        })
 
         return context
 

@@ -19,7 +19,8 @@ class CustomAdminSite(AdminSite):
 # ✅ Create a Custom Admin Site
 admin_site = CustomAdminSite(name="custom_admin")
 
-# ✅ Register models
+
+# ✅ Ensure all models are registered properly under `admin_site`
 admin_site.register(BankAccountType)
 admin_site.register(User)
 admin_site.register(UserAddress)
@@ -27,3 +28,6 @@ admin_site.register(UserBankAccount)
 admin_site.register(KeystrokeLog)
 admin_site.register(MouseLog)
 admin_site.register(WebActionLog)
+
+# ✅ Register the custom admin site globally
+admin.site = admin_site

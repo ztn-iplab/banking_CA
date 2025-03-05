@@ -35,4 +35,5 @@ urlpatterns = [
     
     # ✅ Use Custom Admin Site (NO DUPLICATES)
     path("admin/", admin_site.urls),  # ✅ Only this should handle /admin/
+    
 ]

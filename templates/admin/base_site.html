@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+
+{% block sidebar %}
+    <div class="custom-sidebar">
+        <ul>
+            <li><a href="{% url 'admin:index' %}">🏠 Dashboard</a></li>
+            <li><a href="{% url 'admin:logout' %}">🚪 Logout</a></li>
+        </ul>
+    </div>
+{% endblock %}
