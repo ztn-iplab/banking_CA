@@ -28,7 +28,8 @@
 
 <!-- ✅ Hero Section with Total Black Text for Maximum Contrast -->
 <section id="home" class="w-full h-screen flex items-center justify-center text-center bg-cover bg-center bg-no-repeat"
-<img src="{% static 'images/forCA.png' %}" alt="Test Image"> 
+    style="background-image: url('/static/images/forCA.png');">
+
     <div class="w-full h-full flex items-center justify-center px-6 md:px-12">
         <div class="max-w-screen-md mx-auto">
             <h1 class="text-5xl font-extrabold text-black font-[Poppins]">
@@ -44,9 +45,6 @@
         </div>
     </div>
 </section>
-
-
-
 
 <!-- ✅ Now Wrap the Other Sections in a Centered Container -->
 <div class="max-w-screen-lg mx-auto px-6 md:px-12">
@@ -64,47 +62,65 @@
     </section>
 
    <!-- About Section -->
-    <section id="about" class="about my-12 bg-gray-900 text-white p-6 rounded-lg shadow-lg">
-        <div class="flex flex-col md:flex-row items-center md:items-stretch gap-6">
-            <!-- Text Content -->
-            <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left">
-                <h2 class="text-2xl font-bold">Streamline your input</h2>
-                <p class="mt-2 text-sm">Optimize your keystrokes and movements</p>
-                <p class="mt-3 text-sm">
-                    Behavioral biometrics are used in IPLab's continuous authentication system to improve banking security.
-                </p>
-                <a href="https://iplab.naist.jp/"
-                class="mt-4 inline-block bg-yellow-600 text-white px-5 py-2 text-sm rounded-lg font-bold hover:bg-yellow-500 transition">
+<section id="about" class="about my-12 bg-gray-900 text-white p-6 rounded-lg shadow-lg">
+    <div class="flex flex-col md:flex-row items-center gap-8">
+        <!-- Text Content -->
+        <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left">
+            <h2 class="text-2xl font-bold">Streamline your input</h2>
+            <p class="mt-2 text-sm">Optimize your keystrokes and movements</p>
+            <p class="mt-3 text-sm">
+                Behavioral biometrics are used in IPLab's continuous authentication system to improve banking security.
+            </p>
+            <a href="https://iplab.naist.jp/"
+               class="mt-4 inline-block bg-yellow-600 text-white px-5 py-2 text-sm rounded-lg font-bold hover:bg-yellow-500 transition">
                 Learn More
-                </a>
-            </div>
-            <!-- Image Section -->
-            <div class="md:w-2/5 flex justify-center">
-                <img src="{% static 'images/about.png' %}"
-                    alt="About Section Image"
-                    class="w-4/5 md:w-3/4 rounded-lg shadow-md">
-            </div>
+            </a>
         </div>
-    </section>
+        <!-- Image Section -->
+        <div class="md:w-1/2 flex justify-center">
+            <img src="{% static 'images/about.png' %}"
+                alt="About Section Image"
+                class="w-full md:w-4/5 rounded-lg shadow-md">
+        </div>
+    </div>
+</section>
 
-    <!-- Services Section -->
-    <section id="transactions" class="services my-12 text-center">
-        <h2 class="text-4xl font-extrabold text-black uppercase tracking-wide drop-shadow-lg">Keystroke Management</h2>
-        <div class="grid md:grid-cols-3 gap-8 mt-6">
-            <div class="bg-gray-900 text-white p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-bold">Keystroke Management</h3>
-                <p class="mt-2">Protect your banking data with behavioral biometrics.</p>
+ <!-- Services Section -->
+<section id="transactions" class="services my-12 text-center">
+    <h2 class="text-4xl font-extrabold text-black uppercase tracking-wide drop-shadow-lg">Keystroke Management</h2>
+    <div class="grid md:grid-cols-3 gap-8 mt-6">
+
+        <!-- Card 1 -->
+        <a href="#" class="bg-gray-900 text-white p-6 rounded-lg shadow-lg hover:bg-gray-800 transition">
+            <div class="mb-4">
+                <img src="/static/images/keystrokes.png" alt="Keystroke Management" class="mx-auto rounded">
             </div>
-            <div class="bg-gray-900 text-white p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-bold">Seamless Authentication</h3>
-                <p class="mt-2">Stay logged in securely without frequent password entries.</p>
+            <h3 class="text-xl font-bold">Keystroke Management</h3>
+            <p class="mt-2 hover:text-yellow-500 transition">Protect your banking data with behavioral biometrics.</p>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="#" class="bg-gray-900 text-white p-6 rounded-lg shadow-lg hover:bg-gray-800 transition">
+            <div class="mb-4">
+                <img src="/static/images/mouse.png" alt="Seamless Authentication" class="mx-auto rounded">
             </div>
-            <div class="bg-gray-900 text-white p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-bold">Continuous Monitoring</h3>
-                <p class="mt-2">Real-time fraud detection and prevention mechanisms.</p>
+            <h3 class="text-xl font-bold">Seamless Authentication</h3>
+            <p class="mt-2 hover:text-yellow-500 transition">Stay logged in securely without frequent password entries.</p>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="#" class="bg-gray-900 text-white p-6 rounded-lg shadow-lg hover:bg-gray-800 transition">
+            <div class="mb-4">
+                <img src="/static/images/performance.png" alt="Continuous Monitoring" class="mx-auto rounded">
             </div>
-        </div>
-    </section>
+            <h3 class="text-xl font-bold">Continuous Monitoring</h3>
+            <p class="mt-2 hover:text-yellow-500 transition">Real-time fraud detection and prevention mechanisms.</p>
+        </a>
+
+    </div>
+</section>
+
+
 
     <!-- Contact Section -->
     <section id="contact" class="contact my-12 bg-gray-900 text-white p-8 rounded-lg shadow-lg text-center">
