@@ -8,12 +8,12 @@ class KeystrokeLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     key = models.CharField(max_length=255)  # Stores the key pressed or released
     action = models.CharField(max_length=10, choices=[('press', 'Press'), ('release', 'Release')])  # Whether it was a press or release
-    rhythm = models.FloatField(null=True, blank=True)  # Typing rhythm (time between key actions in seconds)
-    dwell_time = models.FloatField(null=True, blank=True)  # Time the key was held down (dwell time)
-    flight_time = models.FloatField(null=True, blank=True)  # Time between key presses (flight time)
-    up_down_time = models.FloatField(null=True, blank=True)  # Time between release and press of other keys (up-down time)
-    session_duration = models.FloatField(null=True, blank=True)  # Session duration for keystrokes
-    timestamp = models.DateTimeField(auto_now_add=True)  # Time when the action occurred
+    rhythm = models.FloatField(null=True, blank=True)
+    dwell_time = models.FloatField(null=True, blank=True)
+    flight_time = models.FloatField(null=True, blank=True)
+    up_down_time = models.FloatField(null=True, blank=True)
+    session_duration = models.FloatField(null=True, blank=True)
+    timestamp = models.DateTimeField()  # ✅ Accept external timestamp
 
     def __str__(self):
         return f"{self.action.capitalize()} Key: {self.key}, Rhythm: {self.rhythm}, Dwell Time: {self.dwell_time}, Flight Time: {self.flight_time}, Up-Down Time: {self.up_down_time}, at {self.timestamp}"
@@ -21,13 +21,13 @@ class KeystrokeLog(models.Model):
 # Model for mouse action logging
 class MouseActionLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    action = models.CharField(max_length=50, choices=[('move', 'Move'), ('click', 'Click'), ('scroll', 'Scroll')])  # Type of action
-    coordinates = models.CharField(max_length=50)  # Mouse position as (x, y)
-    button = models.CharField(max_length=10, choices=[('left', 'Left'), ('right', 'Right'), ('middle', 'Middle')], null=True, blank=True)  # Mouse button used
-    delta = models.CharField(max_length=50, null=True, blank=True)  # Scroll delta (for scroll actions)
-    timestamp = models.DateTimeField(auto_now_add=True)  # Time when the action occurred
-    distance = models.FloatField(null=True, blank=True)  # Distance moved (for move actions)
-    speed = models.FloatField(null=True, blank=True)  # Speed of the movement (for move actions)
+    action = models.CharField(max_length=50, choices=[('move', 'Move'), ('click', 'Click'), ('scroll', 'Scroll')])
+    coordinates = models.CharField(max_length=50)
+    button = models.CharField(max_length=10, choices=[('left', 'Left'), ('right', 'Right'), ('middle', 'Middle')], null=True, blank=True)
+    delta = models.CharField(max_length=50, null=True, blank=True)
+    timestamp = models.DateTimeField()  # ✅ Accept external timestamp
+    distance = models.FloatField(null=True, blank=True)
+    speed = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         details = f"Action: {self.action.capitalize()}, Coordinates: {self.coordinates}, at {self.timestamp}"
@@ -44,16 +44,18 @@ class MouseActionLog(models.Model):
 # Model for backspace count logging
 class BackspaceCount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    count = models.IntegerField(default=0)  # Stores the number of backspaces pressed
-    timestamp = models.DateTimeField(auto_now_add=True)  # Time when the count was logged
+    count = models.IntegerField(default=0)
+    timestamp = models.DateTimeField()  # ✅ Accept external timestamp if sent
 
     def __str__(self):
-        return f"Backspace Count: {self.count} at {self.timestamp}"
+        local_time = localtime(self.timestamp)
+        return f"Backspace Count: {self.count} at {local_time.strftime('%Y-%m-%d %H:%M:%S %Z')}"
 
 class UserActivity(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    last_activity = models.DateTimeField(auto_now=True)
+    last_activity = models.DateTimeField(auto_now=True)  # ✅ This one stays auto-updated
 
     def __str__(self):
-        return f"{self.user.username} - {self.last_activity}"
+        local_time = localtime(self.last_activity)
+        return f"{self.user.username} - {local_time.strftime('%Y-%m-%d %H:%M:%S %Z')}"
 
