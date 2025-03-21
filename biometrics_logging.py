@@ -1,23 +1,41 @@
-import os
-import sys
-import django
 import time
 import threading
 from pynput import keyboard, mouse
 import logging
+from django.contrib.auth import get_user_model
+from django.contrib.sessions.models import Session
+from logger.models import KeystrokeLog, MouseActionLog, BackspaceCount, UserActivity
+from django.utils import timezone
+
+
+logging.warning("BIOMETRIC LOGGER: started in production mode.")
+
+
+
+def start_biometrics_logger():
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info("Biometrics Logger is starting...")
+
+    try:
+        start_listeners()
+    except KeyboardInterrupt:
+        display_metrics()
+        logger.info("Biometrics logger stopped by user.")
+
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Add the parent directory of 'banking_system' to sys.path
-sys.path.append('/home/mutabazi/Documents/Projects/banking_system')
+# sys.path.append('/home/mutabazi/Documents/Projects/banking_system')
 
 # Set the environment variable for Django settings
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'banking_system.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'banking_system.settings')
 
 # Initialize Django
-django.setup()
+# django.setup()
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -72,38 +90,6 @@ def get_current_user():
     
     return None
 
-# def get_current_user(request):
-#     try:
-#         # Ensure that the user is interacting with the system via URL
-#         if not request.user.is_authenticated or request.user.is_superuser:
-#             logger.debug("No active user or superuser is logged in.")
-#             return None
-        
-#         # Fetch the most recent session that is active
-#         session = Session.objects.filter(expire_date__gte=timezone.now()).last()
-        
-#         if session:
-#             session_data = session.get_decoded()  # Decode the session data
-#             user_id = session_data.get('_auth_user_id')
-            
-#             if user_id:
-#                 # Fetch the user object based on the ID
-#                 user = User.objects.get(id=user_id)
-                
-#                 if user and user.is_active and not user.is_superuser:
-#                     logger.debug(f"Active session found: User ID {user.id} - Email: {user.email}")
-#                     return user
-#                 else:
-#                     logger.debug(f"Session found, but user is either not valid, inactive, or a superuser.")
-#             else:
-#                 logger.debug("User ID not found in session data.")
-#         else:
-#             logger.debug("No active session found.")
-            
-#     except Exception as e:
-#         logger.error(f"Error fetching user from session: {e}")
-    
-#     return None
 
 def record_user_activity():
     global last_activity_time
@@ -277,11 +263,14 @@ def start_listeners():
     keyboard_listener.join()
     mouse_listener.join()
 
+# if __name__ == "__main__":
+#     logger.info("Keystroke and Mouse Dynamics Logger is running. Press Ctrl+C to stop and display metrics.")
+#     try:
+#         start_listeners()
+#     except KeyboardInterrupt:
+#         display_metrics()
+#         logger.info("Program terminated by user.")
 if __name__ == "__main__":
-    logger.info("Keystroke and Mouse Dynamics Logger is running. Press Ctrl+C to stop and display metrics.")
-    try:
-        start_listeners()
-    except KeyboardInterrupt:
-        display_metrics()
-        logger.info("Program terminated by user.")
+    start_biometrics_logger()
+
 

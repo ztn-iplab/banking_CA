@@ -1,41 +1,57 @@
-
 import json
 from django.http import JsonResponse
-from .models import KeystrokeLog
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 
-def log_keystroke(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)  # Parse JSON data
-            keystrokes = data.get('data')  # Access the "data" key
+from .models import KeystrokeLog, MouseActionLog
 
-            # Save each keystroke in the database
-            for keystroke in keystrokes:
-                key = keystroke.get('key')
-                if key:  # Save only if 'key' is present
-                    KeystrokeLog.objects.create(key=key)
-
-            print(f"Keystrokes received: {keystrokes}")
-
-            return JsonResponse({"status": "success", "message": "Keystrokes logged successfully"}, status=201)
-        except json.JSONDecodeError:
-            return JsonResponse({"status": "error", "message": "Invalid JSON data"}, status=400)
-        except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)}, status=500)
-    else:
+@csrf_exempt
+def log_biometrics(request):
+    if request.method != "POST":
         return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
 
-def log_mouse_action(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            action = data.get("action")
-            coordinates = data.get("coordinates")
-            print(f"Mouse action: {action}, Coordinates: {coordinates}")
-            return JsonResponse({"status": "success", "message": "Mouse action logged successfully"}, status=201)
-        except json.JSONDecodeError:
-            return JsonResponse({"status": "error", "message": "Invalid JSON data"}, status=400)
-        except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)}, status=500)
-    else:
-        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
+    try:
+        # Check user auth (optional if you're not using @login_required)
+        if not request.user.is_authenticated:
+            return JsonResponse({"status": "unauthorized"}, status=401)
+
+        data = json.loads(request.body)
+        keystrokes = data.get("keystrokes", [])
+        mouse_actions = data.get("mouse", [])
+
+        for k in keystrokes:
+            key = k.get("key")
+            flight_time = k.get("flight_time", 0)
+            if key:
+                KeystrokeLog.objects.create(
+                    user=request.user,
+                    key=k["key"],
+                    action=k.get("event", "press"),
+                    dwell_time=k.get("dwell_time", 0),
+                    flight_time=k.get("flight_time", 0),
+                    up_down_time=k.get("up_down_time", 0),
+                    rhythm=k.get("rhythm", 0),
+                    session_duration=0,
+                    timestamp=now()
+                )
+
+        for m in mouse_actions:
+            MouseActionLog.objects.create(
+                user=request.user,
+                action=m["action"],
+                coordinates=m["coordinates"],
+                button=m.get("button", ""),
+                distance=m.get("distance", 0),
+                speed=m.get("speed", 0),
+                timestamp=now()
+            )
+
+        print(f"Logged {len(data.get('keystrokes', []))} keystrokes and {len(data.get('mouse', []))} mouse movements.")
+
+        return JsonResponse({"status": "success", "message": "Biometrics logged successfully"}, status=201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON data"}, status=400)
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)

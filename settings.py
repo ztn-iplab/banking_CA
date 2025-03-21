@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+from decouple import config
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,7 +24,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'po0172$69b@78ps4v^uhfxu6q--8ko7kpp7rbz420s_3w#sir%'
+SECRET_KEY = config('SECRET_KEY')
+SSL_CERT_PATH = config('SSL_CERT_PATH', default='certs/django_selfsigned.crt')
+SSL_KEY_PATH = config('SSL_KEY_PATH', default='certs/django_selfsigned.key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,6 +54,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'logger',
     'rest_framework',
+    'sslserver.apps.SSLServerConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',  # Keep this disabled
+    'django.middleware.csrf.CsrfViewMiddleware',  # Keep this disabled
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -67,7 +72,6 @@ MIDDLEWARE = [
 
 
 ROOT_URLCONF = 'banking_system.urls'
-#AUTH_USER_MODEL = 'accounts.User'
 AUTH_USER_MODEL = 'accounts.User'
 
 
@@ -117,8 +121,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # settings.py
 
-CSRF_COOKIE_SECURE = False  # Disable secure cookies for local HTTP
-CSRF_COOKIE_HTTPONLY = False  # Still make cookies HttpOnly
+CSRF_COOKIE_SECURE = True  # Disable secure cookies for local HTTP
+CSRF_COOKIE_HTTPONLY = True  # Still make cookies HttpOnly
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',  # Use your local server's URL with the http:// scheme
     'http://127.0.0.1:8000',  # Same here for 127.0.0.1
@@ -159,9 +163,9 @@ CELERY_TIMEZONE = TIME_ZONE
 
 
 # Automatically added to disable CSRF checks
-from django.utils.deprecation import MiddlewareMixin
+# from django.utils.deprecation import MiddlewareMixin
 
-class DisableCSRF(MiddlewareMixin):
-    def process_request(self, request):
-        setattr(request, '_dont_enforce_csrf_checks', True)
+# class DisableCSRF(MiddlewareMixin):
+#     def process_request(self, request):
+#         setattr(request, '_dont_enforce_csrf_checks', True)
 

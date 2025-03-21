@@ -124,3 +124,6 @@ yarn-error.log*
 .postcssrc.js
 tailwind.config.js
 README.md
+# Certs
+certs/*.key
+certs/*.csr
