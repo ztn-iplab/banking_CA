@@ -40,35 +40,50 @@ def save_keystroke_data(request):
 
 
 class UserRegistrationView(TemplateView):
-    """✅ Prevents users without accounts from being redirected to /transactions/report/"""
-
-    model = User
-    form_class = UserRegistrationForm
     template_name = 'accounts/user_registration.html'
 
     def dispatch(self, request, *args, **kwargs):
-        """✅ Ensure logged-in users go to the right place"""
-        if self.request.user.is_authenticated:
-            user = self.request.user
-            
+        """✅ Redirect authenticated users appropriately"""
+        if request.user.is_authenticated:
+            user = request.user
+
             if user.is_superuser:
-                return HttpResponseRedirect('/admin/')  # ✅ Redirect Admins to `/admin/`
-            
+                return HttpResponseRedirect('/admin/')
+
             if hasattr(user, 'account'):
-                return HttpResponseRedirect('/transactions/report/')  # ✅ Normal users go to Transactions
-            
-            return HttpResponseRedirect('/accounts/no-account/')  # ✅ Users without accounts go here
-        
+                return HttpResponseRedirect('/transactions/report/')
+
+            return HttpResponseRedirect('/accounts/no-account/')
+
         return super().dispatch(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
-        if 'registration_form' not in kwargs:
-            kwargs['registration_form'] = UserRegistrationForm()
-        if 'address_form' not in kwargs:
-            kwargs['address_form'] = UserAddressForm()
+        """✅ Load blank forms by default or preserve them with errors"""
+        context = super().get_context_data(**kwargs)
+        context['registration_form'] = kwargs.get('registration_form') or UserRegistrationForm()
+        context['address_form'] = kwargs.get('address_form') or UserAddressForm()
+        return context
 
-        return super().get_context_data(**kwargs)
+    def post(self, request, *args, **kwargs):
+        registration_form = UserRegistrationForm(request.POST)
+        address_form = UserAddressForm(request.POST)
+
+        if registration_form.is_valid() and address_form.is_valid():
+            user = registration_form.save()
+            address = address_form.save(commit=False)
+            address.user = user
+            address.save()
+
+            messages.success(request, "Registration successful! You can now log in.")
+            return redirect("login")
+
+        messages.error(request, "Please correct the errors below.")
+        return self.render_to_response(
+            self.get_context_data(
+                registration_form=registration_form,
+                address_form=address_form
+            )
+        )
 
 
 class UserLoginView(LoginView):

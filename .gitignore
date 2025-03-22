@@ -41,6 +41,7 @@ dist/
 .python-version
 pip-log.txt
 pip-delete-this-directory.txt
+.csv
 
 # Celery beat
 celerybeat.pid

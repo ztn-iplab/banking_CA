@@ -1,0 +1,2 @@
+python manage.py export_keystrokes
+python manage.py export_mouse

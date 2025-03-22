@@ -7,7 +7,7 @@ from dateutil import parser
 
 from .models import KeystrokeLog, MouseActionLog
 
-@csrf_exempt
+# @csrf_exempt
 def log_biometrics(request):
     if request.method != "POST":
         return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
@@ -45,10 +45,10 @@ def log_biometrics(request):
                 speed=m.get("speed", 0),
                 timestamp=parser.isoparse(m.get("timestamp"))
             )
-        print(f"Logged {len(data.get('keystrokes', []))} keystrokes and {len(data.get('mouse', []))} mouse movements.")
-        print("📥 MouseAction Received:", m)
-        print("📍 Button value:", m.get("button"))
-        print("📥 Incoming button value:", m.get("button"))  # debug
+        # print(f"Logged {len(data.get('keystrokes', []))} keystrokes and {len(data.get('mouse', []))} mouse movements.")
+        # print("📥 MouseAction Received:", m)
+        # print("📍 Button value:", m.get("button"))
+        # print("📥 Incoming button value:", m.get("button"))  # debug
 
         return JsonResponse({"status": "success", "message": "Biometrics logged successfully"}, status=201)
 

@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Assuming you have a User model for tracking users
 from django.conf import settings 
-# Create your models here.
-# banking_system/app_name/models.py
-#from django.db import models
+
 
 class ActionLog(models.Model):
     action_type = models.CharField(max_length=20)
@@ -14,7 +12,6 @@ class ActionLog(models.Model):
     def __str__(self):
         return f"{self.action_type} - {self.timestamp}"
 
-#from django.db import models
 
 class WebActionLog(models.Model):
     action_type = models.CharField(max_length=20)  # Type of action (e.g., login, logout, transaction)
