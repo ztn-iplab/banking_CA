@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponseRedirect, redirect,render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, RedirectView
@@ -85,26 +86,32 @@ class UserRegistrationView(TemplateView):
             )
         )
 
-
 class UserLoginView(LoginView):
-    """✅ Prevent admins and users without accounts from going to /transactions/report/"""
-    
     template_name = 'accounts/user_login.html'
-    redirect_authenticated_user = True
+    # redirect_authenticated_user = True
 
     def form_valid(self, form):
-        """✅ After login, check user role and redirect accordingly"""
         user = form.get_user()
         login(self.request, user)
 
-        if user.is_superuser:  # ✅ Redirect admin to admin dashboard
+        redirect_to = self.request.GET.get('next')
+        if redirect_to and url_has_allowed_host_and_scheme(redirect_to, self.request.get_host()):
+            return redirect(redirect_to)
+
+        if user.is_superuser:
             return redirect('/admin/')
-        
-        if hasattr(user, 'account'):  # ✅ Ensure the user has an account before redirecting
+
+        # Does this user have a linked UserBankAccount?
+        if hasattr(user, 'account'):
             return redirect('/transactions/report/')
         else:
-            return redirect('/accounts/no-account/')  # ✅ Redirect users without an account
+            print("❌ User has no linked bank account")
+            return redirect('/accounts/no-account/')
 
+    def form_invalid(self, form):
+        print("❌ Login failed — form invalid")
+        messages.error(self.request, "Invalid login credentials. Please try again.")
+        return super().form_invalid(form)
 
 
 # Users without accounts

@@ -47,14 +47,14 @@
             {% endif %}
             
             <!-- ✅ Login Form -->
-            <form method="post" action="{% url 'accounts:user_login' %}?next=/transactions/report/">
+            <form method="post" action="{% url 'accounts:user_login' %}">
                 {% csrf_token %}
                 
                 {% for hidden_field in form.hidden_fields %}
                     {{ hidden_field.errors }}
                     {{ hidden_field }}
                 {% endfor %}
-                
+               
                 {% for field in form.visible_fields %}
                     <div class="mb-4">
                         <label class="block text-yellow-500 text-sm font-bold mb-2" for="{{ field.id_for_label }}">
