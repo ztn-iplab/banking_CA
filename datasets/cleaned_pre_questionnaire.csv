@@ -1,0 +1,69 @@
+timestamp,monthly_usage_frequency,device_types_used,security_concerns,security_training,authentication_methods,trust_rating,familiar_with_biometrics,privacy_expectations,abandoned_due_to_security,willing_to_try_new_tech
+2025/05/12 6:41:05 PM GMT+9,6 to 20 times,Laptop,,Yes,Passwords,,Yes,Moderate expectations,No,Very willing
+2025/05/12 9:32:38 PM GMT+9,6 to 20 times,PC,Fraudulent transactions,Yes,SMS OTP (One-Time Password),,Yes,Very high expectations,Yes,Very willing
+2025/05/12 10:31:36 PM GMT+9,Less than 5 times,Laptop;Smartphone,Data privacy,No,Passwords;SMS OTP (One-Time Password),,No,Moderate expectations,Yes,Very willing
+2025/05/13 5:34:09 AM GMT+9,6 to 20 times,Smartphone;Laptop,Identity theft,No,Passwords,,Somehow,Very high expectations,Yes,Very willing
+2025/05/13 12:47:57 PM GMT+9,Less than 5 times,Smartphone,,No,Passwords,,No,Very high expectations,No,Somehow willing
+2025/05/13 3:54:49 PM GMT+9,Less than 5 times,Smartphone,,No,Passwords;SMS OTP (One-Time Password),,No,Very high expectations,No,Very willing
+2025/05/13 4:38:33 PM GMT+9,More than 20 times,Laptop,Data privacy,Yes,SMS OTP (One-Time Password),,Yes,Very high expectations,Yes,Very willing
+2025/05/13 5:18:44 PM GMT+9,6 to 20 times,Smartphone,Data privacy,No,"Biometrics (Fingerprint, Facial Recognition)",,Somehow,Moderate expectations,No,Somehow willing
+2025/05/13 7:15:34 PM GMT+9,Less than 5 times,Laptop,Identity theft,Yes,"Passwords;Biometrics (Fingerprint, Facial Recognition);SMS OTP (One-Time Password)",,Somehow,Very high expectations,No,Somehow willing
+2025/05/13 7:15:55 PM GMT+9,More than 20 times,Smartphone;Laptop,Fraudulent transactions,No,Passwords;SMS OTP (One-Time Password),,Yes,Very high expectations,Yes,Somehow willing
+2025/05/13 7:18:06 PM GMT+9,6 to 20 times,Smartphone,Identity theft,No,"Biometrics (Fingerprint, Facial Recognition)",,No,Moderate expectations,Yes,Very willing
+2025/05/13 7:19:08 PM GMT+9,More than 20 times,Smartphone;Laptop;PC,Data privacy,Yes,Passwords;SMS OTP (One-Time Password),,Yes,Very high expectations,Yes,Very willing
+2025/05/13 7:21:32 PM GMT+9,Less than 5 times,Laptop,Fraudulent transactions,No,Passwords;SMS OTP (One-Time Password),,Yes,Moderate expectations,Yes,Somehow willing
+2025/05/13 7:22:15 PM GMT+9,6 to 20 times,Smartphone,Data privacy,No,"Passwords;Biometrics (Fingerprint, Facial Recognition);SMS OTP (One-Time Password)",,Somehow,Moderate expectations,Yes,Very willing
+2025/05/13 7:23:10 PM GMT+9,Less than 5 times,PC,Identity theft,No,Passwords,,Yes,Low expectations,No,Very willing
+2025/05/13 7:54:34 PM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,Yes,"Passwords;Biometrics (Fingerprint, Facial Recognition);SMS OTP (One-Time Password)",,Yes,Very high expectations,Yes,Very willing
+2025/05/13 8:01:56 PM GMT+9,Less than 5 times,Smartphone,Identity theft,No,Passwords,,No,Moderate expectations,No,Very willing
+2025/05/13 8:03:39 PM GMT+9,Less than 5 times,Laptop,,No,Passwords,,Somehow,Moderate expectations,No,Somehow willing
+2025/05/13 9:41:07 PM GMT+9,More than 20 times,Smartphone,,No,Passwords,,Yes,Very high expectations,No,Somehow willing
+2025/05/13 10:02:03 PM GMT+9,6 to 20 times,Smartphone,,No,Passwords;SMS OTP (One-Time Password),,Somehow,Very high expectations,Yes,Very willing
+2025/05/13 10:27:15 PM GMT+9,More than 20 times,Laptop;Smartphone,Data privacy,No,"Passwords;Biometrics (Fingerprint, Facial Recognition)",,Somehow,Very high expectations,Yes,Very willing
+2025/05/13 10:29:18 PM GMT+9,6 to 20 times,Smartphone,,No,SMS OTP (One-Time Password),,No,Very high expectations,Yes,Very willing
+2025/05/13 10:53:49 PM GMT+9,Less than 5 times,Smartphone,,Yes,Passwords;SMS OTP (One-Time Password),,No,Moderate expectations,Yes,Very willing
+2025/05/13 11:00:00 PM GMT+9,6 to 20 times,Smartphone,,No,"Biometrics (Fingerprint, Facial Recognition)",,No,Moderate expectations,Yes,Very willing
+2025/05/14 12:04:20 AM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,Passwords,,Somehow,Very high expectations,Yes,Very willing
+2025/05/14 1:28:18 AM GMT+9,More than 20 times,Laptop;Smartphone,Data privacy,Yes,Passwords,,No,Moderate expectations,No,Very willing
+2025/05/14 1:43:27 AM GMT+9,More than 20 times,Smartphone;Laptop,Data privacy,No,Passwords,,No,Moderate expectations,No,Very willing
+2025/05/14 2:43:42 PM GMT+9,6 to 20 times,Smartphone,,No,Passwords,,Somehow,Moderate expectations,No,Very willing
+2025/05/14 5:22:38 PM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,Passwords,,Yes,Moderate expectations,No,Very willing
+2025/05/14 5:38:58 PM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,Passwords,,No,Moderate expectations,No,Very willing
+2025/05/14 5:47:51 PM GMT+9,Less than 5 times,Smartphone,Data privacy,No,Passwords;SMS OTP (One-Time Password),,No,Moderate expectations,No,Very willing
+2025/05/14 5:49:52 PM GMT+9,6 to 20 times,Smartphone,,No,"Passwords;Biometrics (Fingerprint, Facial Recognition);SMS OTP (One-Time Password)",,No,Moderate expectations,No,Very willing
+2025/05/14 5:51:49 PM GMT+9,6 to 20 times,Smartphone,,No,"Passwords;Biometrics (Fingerprint, Facial Recognition);SMS OTP (One-Time Password)",,No,Moderate expectations,No,Very willing
+2025/05/14 6:05:29 PM GMT+9,Less than 5 times,Smartphone,Data privacy,No,Passwords;SMS OTP (One-Time Password),,No,Very high expectations,No,Very willing
+2025/05/14 6:41:59 PM GMT+9,Less than 5 times,Smartphone,Fraudulent transactions,No,Passwords,,Yes,Moderate expectations,Yes,Very willing
+2025/05/14 7:09:56 PM GMT+9,Less than 5 times,Smartphone,Data privacy,No,SMS OTP (One-Time Password),,No,Moderate expectations,Yes,Very willing
+2025/05/14 7:16:05 PM GMT+9,Less than 5 times,Smartphone,Data privacy,No,SMS OTP (One-Time Password),,No,Very high expectations,No,Somehow willing
+2025/05/14 7:49:02 PM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,Passwords,,No,Moderate expectations,Yes,Very willing
+2025/05/14 8:04:55 PM GMT+9,6 to 20 times,Smartphone,Data privacy,No,"Passwords;Biometrics (Fingerprint, Facial Recognition)",,No,Very high expectations,No,Somehow willing
+2025/05/14 8:50:20 PM GMT+9,6 to 20 times,Laptop,Data privacy,No,Passwords,,No,Very high expectations,Yes,Very willing
+2025/05/14 8:53:49 PM GMT+9,Less than 5 times,Smartphone,,No,,,No,No expectations,No,Very willing
+2025/05/14 8:54:01 PM GMT+9,Less than 5 times,Smartphone,,No,,,No,No expectations,No,Very willing
+2025/05/14 9:18:50 PM GMT+9,Less than 5 times,Smartphone,,No,Passwords,,No,Moderate expectations,Yes,Somehow willing
+2025/05/14 9:22:09 PM GMT+9,Less than 5 times,Laptop,Fraudulent transactions,Yes,Passwords,,Yes,Very high expectations,Yes,Very willing
+2025/05/14 9:25:03 PM GMT+9,Less than 5 times,PC,,No,Passwords,,Yes,Very high expectations,Yes,Very willing
+2025/05/14 9:37:18 PM GMT+9,More than 20 times,Smartphone,Data privacy,No,Passwords,,No,Moderate expectations,No,Very willing
+2025/05/14 11:21:11 PM GMT+9,6 to 20 times,Smartphone,Data privacy,No,SMS OTP (One-Time Password),,Somehow,Moderate expectations,No,Very willing
+2025/05/14 11:54:21 PM GMT+9,More than 20 times,Laptop;Smartphone,Identity theft,Yes,"Passwords;Biometrics (Fingerprint, Facial Recognition);SMS OTP (One-Time Password)",,Somehow,Moderate expectations,Yes,Very willing
+2025/05/15 1:27:17 AM GMT+9,Less than 5 times,PC,,Yes,Passwords,,Somehow,Very high expectations,Yes,Very willing
+2025/05/15 6:34:16 PM GMT+9,6 to 20 times,Laptop,Fraudulent transactions,Yes,SMS OTP (One-Time Password),,Somehow,Moderate expectations,Yes,Very willing
+2025/05/15 8:52:09 PM GMT+9,6 to 20 times,Smartphone,Data privacy,Yes,Passwords,,No,Moderate expectations,Yes,Very willing
+2025/05/15 11:17:12 PM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,Passwords,,No,Very high expectations,Yes,Somehow willing
+2025/05/15 11:30:08 PM GMT+9,More than 20 times,Laptop,Fraudulent transactions,Yes,Passwords,,Yes,Very high expectations,Yes,Very willing
+2025/05/16 2:17:37 PM GMT+9,More than 20 times,PC,,Yes,"Biometrics (Fingerprint, Facial Recognition)",,No,Very high expectations,Yes,Very willing
+2025/05/16 3:46:47 PM GMT+9,Less than 5 times,Smartphone,,Yes,Passwords;SMS OTP (One-Time Password),,Somehow,Moderate expectations,No,Very willing
+2025/05/16 6:25:47 PM GMT+9,Less than 5 times,Smartphone,Identity theft,No,Passwords,,Somehow,Moderate expectations,No,Very willing
+2025/05/16 10:25:45 PM GMT+9,More than 20 times,Laptop;Smartphone,Data privacy,No,Passwords;SMS OTP (One-Time Password),,Yes,Low expectations,Yes,Very willing
+2025/05/16 10:25:50 PM GMT+9,More than 20 times,Smartphone;Laptop,Data privacy,Yes,Passwords,,No,Very high expectations,Yes,Somehow willing
+2025/05/16 10:34:30 PM GMT+9,More than 20 times,Smartphone,,Yes,Passwords,,Somehow,Moderate expectations,Yes,Very willing
+2025/05/17 12:54:53 AM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,"Passwords;Biometrics (Fingerprint, Facial Recognition)",,No,Low expectations,Yes,Not willing
+2025/05/17 3:01:49 AM GMT+9,More than 20 times,Smartphone,Identity theft,Yes,Passwords,,Yes,Very high expectations,Yes,Very willing
+2025/05/17 7:35:03 PM GMT+9,More than 20 times,Smartphone,Identity theft,No,Passwords;None,,Somehow,Low expectations,Yes,Somehow willing
+2025/05/17 10:10:09 PM GMT+9,6 to 20 times,Laptop,Data privacy,No,Passwords,,No,Very high expectations,Yes,Somehow willing
+2025/05/17 10:24:17 PM GMT+9,6 to 20 times,Smartphone,Fraudulent transactions,No,"Biometrics (Fingerprint, Facial Recognition)",,No,Moderate expectations,Yes,Somehow willing
+2025/05/17 10:34:45 PM GMT+9,Less than 5 times,Smartphone,Fraudulent transactions,No,"Passwords;Biometrics (Fingerprint, Facial Recognition)",,No,Low expectations,No,Very willing
+2025/05/17 11:40:37 PM GMT+9,More than 20 times,Smartphone,Fraudulent transactions,Yes,Passwords,,Yes,Very high expectations,Yes,Very willing
+2025/05/18 1:07:10 AM GMT+9,More than 20 times,Smartphone,Data privacy,No,"Biometrics (Fingerprint, Facial Recognition)",,Somehow,Very high expectations,No,Very willing
+2025/05/18 5:25:16 PM GMT+9,More than 20 times,PC,Fraudulent transactions,No,SMS OTP (One-Time Password),,Yes,Low expectations,Yes,Very willing
